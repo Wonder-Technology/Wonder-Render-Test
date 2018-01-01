@@ -1,10 +1,11 @@
-open DataType;
+open RenderTestDataType;
 
-let data = [
-  {
-    name: "basic_box",
-    body: [%bs.raw
-      {| function() {
+let renderTestData = {
+  commonData: {scriptFilePathList: ["./test/res/BasicBoxesTool.js", "./test/res/CameraTool.js", "./test/res/wd.js"]},
+  testData: [
+    {
+      name: "basic_box",
+      bodyFunc: {|
                     var state = wd.setMainConfig({
                         isTest: false
                     });
@@ -26,10 +27,10 @@ let data = [
 
                         return wd.startDirector(state);
                     }
+    |},
+      imagePath: "test/generate/",
+      scriptFilePathList: None,
+      frameData: [{timePath: [10]}, {timePath: [10, 20]}]
     }
-    |}
-    ],
-    imagePath: "basic",
-    frameData: [{timePath: [10.]}, {timePath: [10., 20.]}]
-  }
-];
+  ]
+};
