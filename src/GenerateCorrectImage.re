@@ -129,7 +129,7 @@ let generate = ({commonData, testData}) =>
        (browser) =>
          testData
          |> List.fold_left(
-              (promise, {bodyFunc, name, imagePath, frameData, scriptFilePathList}) =>
+              (promise, {bodyFuncStr, name, imagePath, frameData, scriptFilePathList}) =>
                 frameData
                 |> List.fold_left(
                      (promise, {timePath}) =>
@@ -144,7 +144,7 @@ let generate = ({commonData, testData}) =>
                                      page
                                      |> Page.evaluateWithTwoArgs(
                                           [@bs] _evaluateScript,
-                                          bodyFunc,
+                                          bodyFuncStr,
                                           timePath |> Array.of_list
                                         )
                                      |> then_(

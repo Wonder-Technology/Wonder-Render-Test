@@ -4,7 +4,7 @@ type frameDataItem = {timePath: list(int)};
 
 type testDataItem = {
   name: string,
-  bodyFunc: string,
+  bodyFuncStr: string,
   imagePath: string,
   scriptFilePathList: option(list(string)),
   frameData: list(frameDataItem)

@@ -5,7 +5,7 @@ let renderTestData = {
   testData: [
     {
       name: "basic_box",
-      bodyFunc: {|
+      bodyFuncStr: {|
                     var state = wd.setMainConfig({
                         isTest: false
                     });
