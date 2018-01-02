@@ -1,6 +1,6 @@
 open RenderTestDataType;
 
-let _getImageType = () => GenerateImageType.CORRECT("correct");
+let _getImageType = () => GenerateImageType.CURRENT("current");
 
 let getAllImagePathDataList = (renderTestData) =>
   GenerateImage.getAllImagePathDataList(renderTestData, _getImageType());

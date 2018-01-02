@@ -1,0 +1,1 @@
+let buildImagePath = GenerateImage.buildImagePath;

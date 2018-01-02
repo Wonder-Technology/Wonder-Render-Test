@@ -6,6 +6,9 @@ type testDataItem = {
   name: string,
   bodyFuncStr: string,
   imagePath: string,
+  distance:option(float),
+  diffPercent:option(float),
+  threshold:option(float),
   scriptFilePathList: option(list(string)),
   frameData: list(frameDataItem)
 };

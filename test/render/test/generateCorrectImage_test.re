@@ -9,32 +9,31 @@ let _ =
       open Sinon;
       open Js.Promise;
       open Node;
-      open GenerateCorrectImage;
       open RenderTestDataType;
       /* let _buildExpectedExistList = ({testData}) =>
-        ArraySystem.range(
-          0,
-          (
-            testData
-            |> List.fold_left(
-                 (count, {frameData}) =>
-                   count
-                   + (
-                     frameData
-                     |> List.fold_left((count, {timePath}) => count + (timePath |> List.length), 0)
-                   ),
-                 0
-               )
-          )
-          - 2
-        )
-        |> Js.Array.reduce((resultList, _) => [true, ...resultList], []); */
-      afterEach(() => NodeExtend.rmdirFilesSync(Path.join([|Process.cwd(), "./test/generate"|])));
+         ArraySystem.range(
+           0,
+           (
+             testData
+             |> List.fold_left(
+                  (count, {frameData}) =>
+                    count
+                    + (
+                      frameData
+                      |> List.fold_left((count, {timePath}) => count + (timePath |> List.length), 0)
+                    ),
+                  0
+                )
+           )
+           - 2
+         )
+         |> Js.Array.reduce((resultList, _) => [true, ...resultList], []); */
+      beforeEach(() => NodeExtend.rmdirFilesSync(Path.join([|Process.cwd(), "./test/image"|])));
       testPromise(
         "test generate correct images to specific dir",
         () =>
           RenderTestData.(
-            generate(renderTestData)
+            GenerateCorrectImage.generate(renderTestData)
             |> then_(
                  (_) =>
                    renderTestData.testData
@@ -43,7 +42,14 @@ let _ =
                           frameData
                           |> List.fold_left(
                                (isExistList, {timePath}) => [
-                                 Fs.existsSync(GenerateCorrectImageTool.buildImagePath(name, imagePath, timePath)),
+                                 Fs.existsSync(
+                                   GenerateImageTool.buildImagePath(
+                                     GenerateImageType.CORRECT("correct"),
+                                     name,
+                                     imagePath,
+                                     timePath
+                                   )
+                                 ),
                                  ...isExistList
                                ],
                                isExistList

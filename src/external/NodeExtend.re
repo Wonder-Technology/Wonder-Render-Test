@@ -2,6 +2,26 @@
 
 [@bs.val] [@bs.module "fs"] external mkdirSync : string => unit = "";
 
+open Node;
+
+let mkAlldirsSync = (targetDir: string) => {
+  let sep = Path.sep;
+  targetDir
+  |> Js.String.split(sep)
+  |> Js.Array.reduce(
+       (parentDir, childDir) => {
+         let curDir = Path.resolve(parentDir, childDir);
+         Fs.existsSync(curDir) ?
+           curDir :
+           {
+             mkdirSync(curDir);
+             curDir
+           }
+       },
+       Path.isAbsolute(targetDir) ? sep : ""
+     )
+};
+
 let rmdirFilesSync = [%bs.raw
   {|
 function(dir)    {

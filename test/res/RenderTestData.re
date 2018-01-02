@@ -1,7 +1,13 @@
 open RenderTestDataType;
 
 let renderTestData = {
-  commonData: {scriptFilePathList: ["./test/res/BasicBoxesTool.js", "./test/res/CameraTool.js", "./test/res/wd.js"]},
+  commonData: {
+    scriptFilePathList: [
+      "./test/res/BasicBoxesTool.js",
+      "./test/res/CameraTool.js",
+      "./test/res/wd.js"
+    ]
+  },
   testData: [
     {
       name: "basic_box",
@@ -28,8 +34,11 @@ let renderTestData = {
                         return wd.startDirector(state);
                     }
     |},
-      imagePath: "test/generate/",
+      imagePath: "test/image/",
       scriptFilePathList: None,
+      distance: None,
+      diffPercent: None,
+      threshold: None,
       frameData: [{timePath: [10]}, {timePath: [10, 20]}]
     }
   ]
