@@ -28,15 +28,15 @@ let _ =
            - 2
          )
          |> Js.Array.reduce((resultList, _) => [true, ...resultList], []); */
-      beforeEach(() => NodeExtend.rmdirFilesSync(Path.join([|Process.cwd(), "./test/image"|])));
+      afterEach(() => NodeExtend.rmdirFilesSync(Path.join([|Process.cwd(), "./test/image"|])));
       testPromise(
         "test generate correct images to specific dir",
         () =>
           RenderTestData.(
-            GenerateCorrectImage.generate(renderTestData)
+            GenerateCorrectImage.generate(correctRenderTestData)
             |> then_(
                  (_) =>
-                   renderTestData.testData
+                   correctRenderTestData.testData
                    |> List.fold_left(
                         (isExistList, {name, imagePath, frameData}) =>
                           frameData

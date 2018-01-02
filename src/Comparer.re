@@ -4,15 +4,13 @@ open Contract;
 
 open Js.Promise;
 
-let _isPass = (pixelCount, correctRate, hitCount) =>
-  hitCount >= ((pixelCount / 4 |> Number.intToFloat) *. correctRate |> Js.Math.floor);
-
-let _getTargetDistance = (distance) =>
-  switch distance {
-  | None => 0.15
-  | Some(d) => d
-  };
-
+/* let _isPass = (pixelCount, correctRate, hitCount) =>
+   hitCount >= ((pixelCount / 4 |> Number.intToFloat) *. correctRate |> Js.Math.floor); */
+/* let _getTargetDistance = (distance) =>
+   switch distance {
+   | None => 0.15
+   | Some(d) => d
+   }; */
 let _getTargetDiffPercent = (percent) =>
   switch percent {
   | None => 0.15
@@ -24,6 +22,8 @@ let _getTargetThreshold = (threshold) =>
   | None => 0.1
   | Some(t) => t
   };
+
+let _getCaseText = (imagePath) => Node.Path.basename_ext(imagePath, ".png");
 
 let compare = (renderTestData) =>
   GenerateCurrentImage.generate(renderTestData)
@@ -48,17 +48,30 @@ let compare = (renderTestData) =>
                   (resultList) =>
                     Jimp.read(currentImagePath)
                     |> then_(
-                         (image1) =>
+                         (currentImage) =>
                            Jimp.read(correctImagePath)
                            |> then_(
-                                (image2) => {
-                                  /* let actualDistance = Jimp.distance(image1, image2); */
+                                (correctImage) => {
+                                  /* let actualDistance = Jimp.distance(currentImage, correctImage); */
                                   let diff =
-                                    Jimp.diff(image1, image2, _getTargetThreshold(threshold));
+                                    Jimp.diff(
+                                      currentImage,
+                                      correctImage,
+                                      _getTargetThreshold(threshold)
+                                    );
                                   /* if (actualDistance >= _getTargetDistance(distance)
                                      && diff##percent >= _getTargetDiffPercent(diffPercent)) { */
                                   if (diff##percent >= _getTargetDiffPercent(diffPercent)) {
-                                    [diff##image, ...resultList] |> resolve
+                                    [
+                                      (
+                                        _getCaseText(correctImagePath),
+                                        currentImage,
+                                        correctImage,
+                                        diff##image
+                                      ),
+                                      ...resultList
+                                    ]
+                                    |> resolve
                                   } else {
                                     resultList |> resolve
                                   }
@@ -72,5 +85,18 @@ let compare = (renderTestData) =>
          )
      );
 
-let isPass = (compareResultList: list(JimpType.jimpImage)) =>
-  compareResultList |> List.length === 0;
+let isPass = (compareResultList) => compareResultList |> List.length === 0;
+
+let getFailText = (compareResultList) =>
+  "fail cases:\n"
+  ++ (
+    compareResultList
+    |> List.fold_left(
+         (arr, (caseText, _, _, _)) => {
+           arr |> Js.Array.push(caseText) |> ignore;
+           arr
+         },
+         [||]
+       )
+    |> Js.Array.joinWith(",")
+  );
