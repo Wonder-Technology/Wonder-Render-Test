@@ -7,7 +7,16 @@
     },
     {
       "dir": "test",
-      "subdirs": true,
+      "subdirs": [
+        {
+          "dir": "render",
+          "subdirs": true
+        },
+        {
+          "dir": "res",
+          "subdirs": true
+        }
+      ],
       "type": "dev"
     }
   ],
