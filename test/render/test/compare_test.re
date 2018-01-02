@@ -19,15 +19,12 @@ let _ =
                           Comparer.compare(renderTestData)
                           |> then_(
                                (list) => {
-
                                  WonderCommonlib.DebugUtils.log(list |> List.length) |> ignore;
-
-                                 /* WonderCommonlib.DebugUtils.log(List.nth(list,1)) |> ignore; */
-
-                                 1 |> expect == 1 |> resolve
+                                 Comparer.isPass(list) |> expect == true |> resolve
                                }
                              )
-                        ), 160000
+                        ),
+                      160000
                     )
                   )
               )
