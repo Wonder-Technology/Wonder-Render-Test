@@ -52,11 +52,12 @@ let compare = (renderTestData) =>
                            Jimp.read(correctImagePath)
                            |> then_(
                                 (image2) => {
-                                  let actualDistance = Jimp.distance(image1, image2);
+                                  /* let actualDistance = Jimp.distance(image1, image2); */
                                   let diff =
                                     Jimp.diff(image1, image2, _getTargetThreshold(threshold));
-                                  if (actualDistance >= _getTargetDistance(distance)
-                                      && diff##percent >= _getTargetDiffPercent(diffPercent)) {
+                                  /* if (actualDistance >= _getTargetDistance(distance)
+                                     && diff##percent >= _getTargetDiffPercent(diffPercent)) { */
+                                  if (diff##percent >= _getTargetDiffPercent(diffPercent)) {
                                     [diff##image, ...resultList] |> resolve
                                   } else {
                                     resultList |> resolve
