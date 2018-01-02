@@ -12,12 +12,12 @@ let _ =
       open RenderTestDataType;
       open RenderTestData;
       beforeAllPromise(() => GenerateCorrectImage.generate(correctRenderTestData));
-      testPromiseWithTimeout(
+      testPromise(
         "test compare correct and wrong image",
         () =>
           Comparer.compare(wrongRenderTestData)
           |> then_(
-               (list) => {
+               ((_, list)) => {
                  let failText = Comparer.getFailText(list);
                  WonderCommonlib.DebugUtils.log(list |> List.length) |> ignore;
                  (
@@ -28,8 +28,7 @@ let _ =
                  |> expect == (false, true, true)
                  |> resolve
                }
-             ),
-        160000
+             )
       )
     }
   );

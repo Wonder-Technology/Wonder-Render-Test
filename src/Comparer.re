@@ -65,8 +65,8 @@ let compare = (renderTestData) =>
                                     [
                                       (
                                         _getCaseText(correctImagePath),
-                                        currentImage,
-                                        correctImage,
+                                        currentImagePath,
+                                        correctImagePath,
                                         diff##image
                                       ),
                                       ...resultList
@@ -83,7 +83,8 @@ let compare = (renderTestData) =>
            currentImagePathDataList,
            correctImagePathDataList
          )
-     );
+     )
+  |> then_((compareResultList) => (renderTestData, compareResultList) |> resolve);
 
 let isPass = (compareResultList) => compareResultList |> List.length === 0;
 
