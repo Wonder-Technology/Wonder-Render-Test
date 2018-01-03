@@ -1,9 +1,9 @@
 {
   "name": "wonder-render-test",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "authors": "Wonder",
   "description": "render test library",
-  "homepage": "https://github.com/Wonder/Wonder-Render-Test",
+  "homepage": "https://github.com/Wonder-Technology/Wonder-Render-Test",
   "license": "MIT",
   "main": "",
   "scripts": {
