@@ -24,7 +24,7 @@ let generateHtmlFiles = (targetAbsoluteReportFilePath: string, (renderTestData, 
   |> List.iter(
        ((caseText, _, _, _, {bodyFuncStr})) => {
          let htmlStr =
-           GenerateHtmlFile.buildHeadStr("debug")
+           GenerateHtmlFile.buildHeadStr(buildDebugHtmlFileName(caseText))
            ++ "\n<body>\n"
            ++ GenerateHtmlFile.buildImportScriptStr(targetAbsoluteReportFilePath, renderTestData)
            ++ _buildDebugScriptStr(bodyFuncStr)
