@@ -28,7 +28,7 @@ let _ =
            - 2
          )
          |> Js.Array.reduce((resultList, _) => [true, ...resultList], []); */
-      afterEach(() => NodeExtend.rmdirFilesSync(Path.join([|Process.cwd(), "./test/image"|])));
+      beforeEach(() => NodeExtend.rmdirFilesSync(Path.join([|Process.cwd(), "./test/image"|])));
       testPromise(
         "test generate correct images to specific dir",
         () =>
