@@ -14,8 +14,10 @@ let _buildDebugScriptStr = (bodyFuncStr) => {j|<script>
             };
            </script>|j};
 
+let buildDebugHtmlFileName = (caseText) => {j|$(caseText)_debug.html|j};
+
 let _buildDebugHtmlFilePath = (targetAbsoluteReportFilePath, caseText) =>
-  Path.join([|Path.dirname(targetAbsoluteReportFilePath), {j|$(caseText)_debug.html|j}|]);
+  Path.join([|Path.dirname(targetAbsoluteReportFilePath), buildDebugHtmlFileName(caseText)|]);
 
 let generateHtmlFiles = (targetAbsoluteReportFilePath: string, (renderTestData, compareResultList)) =>
   compareResultList

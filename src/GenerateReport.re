@@ -51,16 +51,17 @@ let _buildFailCaseListHtmlStr = (targetAbsoluteFilePath, imageFilePathDataList) 
        )
      )
   |> List.fold_left(
-       (resultStr, (caseText, currentImagePath, correctImagePath, diffImagePath)) =>
-         /* todo add debug a href */
+       (resultStr, (caseText, currentImagePath, correctImagePath, diffImagePath)) => {
+         let debugFilePath = "./" ++ GenerateDebug.buildDebugHtmlFileName(caseText);
          resultStr
          ++ {j|<section>
                     <h3>$caseText</h3>
-                        <img class="correct-img" src="$correctImagePath"/>
-                        <img class="current-img" src="$currentImagePath"/>
-                        <img class="diff-img" src="$diffImagePath"/>
+                        <a href="$debugFilePath" target="_blank"><img class="correct-img" src="$correctImagePath"/></a>
+                        <a href="$debugFilePath" target="_blank"><img class="current-img" src="$currentImagePath"/></a>
+                        <a href="$debugFilePath" target="_blank"><img class="diff-img" src="$diffImagePath"/></a>
                 </section>
-                    |j},
+                    |j}
+       },
        ""
      );
 
