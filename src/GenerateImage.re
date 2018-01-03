@@ -79,17 +79,12 @@ let _createImageDir = (generateFilePath: string) => {
 let getAllImagePathDataList = ({testData}, imageType) =>
   testData
   |> List.fold_left(
-       (list, {name, imagePath, distance, diffPercent, threshold, frameData}) =>
+       (list, {name, imagePath, distance, diffPercent, threshold, frameData} as testDataItem) =>
          (
            frameData
            |> List.fold_left(
                 (list, {timePath}) => [
-                  (
-                    buildImagePath(imageType, name, imagePath, timePath),
-                    distance,
-                    diffPercent,
-                    threshold
-                  ),
+                  (buildImagePath(imageType, name, imagePath, timePath), testDataItem),
                   ...list
                 ],
                 []

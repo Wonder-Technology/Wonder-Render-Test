@@ -40,8 +40,8 @@ let compare = (renderTestData) =>
          List.fold_left2(
            (
              promise,
-             (currentImagePath, distance, diffPercent, threshold),
-             (correctImagePath, _, _, _)
+             (currentImagePath, currentTestDataItem),
+             (correctImagePath, correctTestDataItem)
            ) =>
              promise
              |> then_(
@@ -57,17 +57,19 @@ let compare = (renderTestData) =>
                                     Jimp.diff(
                                       currentImage,
                                       correctImage,
-                                      _getTargetThreshold(threshold)
+                                      _getTargetThreshold(currentTestDataItem.threshold)
                                     );
                                   /* if (actualDistance >= _getTargetDistance(distance)
                                      && diff##percent >= _getTargetDiffPercent(diffPercent)) { */
-                                  if (diff##percent >= _getTargetDiffPercent(diffPercent)) {
+                                  if (diff##percent
+                                      >= _getTargetDiffPercent(currentTestDataItem.diffPercent)) {
                                     [
                                       (
                                         _getCaseText(correctImagePath),
                                         currentImagePath,
                                         correctImagePath,
-                                        diff##image
+                                        diff##image,
+                                        currentTestDataItem
                                       ),
                                       ...resultList
                                     ]
@@ -93,7 +95,7 @@ let getFailText = (compareResultList) =>
   ++ (
     compareResultList
     |> List.fold_left(
-         (arr, (caseText, _, _, _)) => {
+         (arr, (caseText, _, _, _, _)) => {
            arr |> Js.Array.push(caseText) |> ignore;
            arr
          },
