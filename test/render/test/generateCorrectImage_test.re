@@ -33,31 +33,35 @@ let _ =
         "test generate correct images to specific dir",
         () =>
           RenderTestData.(
-            GenerateCorrectImage.generate(correctRenderTestData)
+            PuppeteerUtils.launchHeadlessBrowser()
             |> then_(
-                 (_) =>
-                   correctRenderTestData.testData
-                   |> List.fold_left(
-                        (isExistList, {name, imagePath, frameData}) =>
-                          frameData
+                 (browser) =>
+                   GenerateCorrectImage.generate(browser, correctRenderTestData)
+                   |> then_(
+                        (_) =>
+                          correctRenderTestData.testData
                           |> List.fold_left(
-                               (isExistList, {timePath}) => [
-                                 Fs.existsSync(
-                                   GenerateImageTool.buildImagePath(
-                                     GenerateImageType.CORRECT("correct"),
-                                     name,
-                                     imagePath,
-                                     timePath
-                                   )
-                                 ),
-                                 ...isExistList
-                               ],
-                               isExistList
-                             ),
-                        []
+                               (isExistList, {name, imagePath, frameData}) =>
+                                 frameData
+                                 |> List.fold_left(
+                                      (isExistList, {timePath}) => [
+                                        Fs.existsSync(
+                                          GenerateImageTool.buildImagePath(
+                                            GenerateImageType.CORRECT("correct"),
+                                            name,
+                                            imagePath,
+                                            timePath
+                                          )
+                                        ),
+                                        ...isExistList
+                                      ],
+                                      isExistList
+                                    ),
+                               []
+                             )
+                          |> expect == [true, true]
+                          |> resolve
                       )
-                   |> expect == [true, true]
-                   |> resolve
                )
           )
       )

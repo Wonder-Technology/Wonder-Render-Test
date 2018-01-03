@@ -25,8 +25,8 @@ let _getTargetThreshold = (threshold) =>
 
 let _getCaseText = (imagePath) => Node.Path.basename_ext(imagePath, ".png");
 
-let compare = (renderTestData) =>
-  GenerateCurrentImage.generate(renderTestData)
+let compare = (browser, renderTestData) =>
+  GenerateCurrentImage.generate(browser, renderTestData)
   |> then_(
        (_) =>
          (

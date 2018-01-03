@@ -94,79 +94,59 @@ let getAllImagePathDataList = ({testData}, imageType) =>
        []
      );
 
-let generate = ({commonData, testData}, imageType) =>
-  launch(
-    ~options={
-      "ignoreHTTPSErrors": Js.Nullable.empty,
-      "executablePath": Js.Nullable.empty,
-      "slowMo": Js.Nullable.empty,
-      /* "args": Js.Nullable.empty, */
-      "args": Js.Nullable.return([|"--headless", "--hide-scrollbars", "--mute-audio"|]),
-      "handleSIGINT": Js.Nullable.empty,
-      "timeout": Js.Nullable.empty,
-      "dumpio": Js.Nullable.empty,
-      "userDataDir": Js.Nullable.empty,
-      "headless": Js.Nullable.return(Js.false_)
-    },
-    ()
-  )
-  |> then_(
-       (browser) =>
-         testData
+let generate = (browser, {commonData, testData}, imageType) =>
+  testData
+  |> List.fold_left(
+       (promise, {bodyFuncStr, name, imagePath, frameData, scriptFilePathList}) =>
+         frameData
          |> List.fold_left(
-              (promise, {bodyFuncStr, name, imagePath, frameData, scriptFilePathList}) =>
-                frameData
-                |> List.fold_left(
-                     (promise, {timePath}) =>
-                       promise
+              (promise, {timePath}) =>
+                promise
+                |> then_(
+                     (browser) =>
+                       browser
+                       |> Browser.newPage
+                       |> _addScript(commonData, scriptFilePathList)
                        |> then_(
-                            (browser) =>
-                              browser
-                              |> Browser.newPage
-                              |> _addScript(commonData, scriptFilePathList)
-                              |> then_(
-                                   (page) =>
-                                     page
-                                     |> Page.evaluateWithTwoArgs(
-                                          [@bs] _evaluateScript,
-                                          bodyFuncStr,
-                                          timePath |> Array.of_list
-                                        )
-                                     |> then_(
-                                          (_) => {
-                                            let path =
-                                              buildImagePath(imageType, name, imagePath, timePath);
-                                            _createImageDir(path);
-                                            page
-                                            |> Page.screenshot(
-                                                 ~options={
-                                                   /* "clip":
-                                                      Js.Nullable.return({
-                                                        "x": 0.,
-                                                        "y": 0.,
-                                                        "width": 300.,
-                                                        "height": 150.
-                                                      }), */
-                                                   "clip": Js.Nullable.empty,
-                                                   "fullPage": Js.Nullable.return(false),
-                                                   "omitBackground": Js.Nullable.return(false),
-                                                   "path": Js.Nullable.return(path),
-                                                   "quality": Js.Nullable.empty,
-                                                   "_type": Js.Nullable.return("png")
-                                                 },
-                                                 ()
-                                               )
-                                          }
-                                        )
-                                     |> then_(
-                                          (_) =>
-                                            page |> Page.close |> then_((_) => browser |> resolve)
-                                        )
+                            (page) =>
+                              page
+                              |> Page.evaluateWithTwoArgs(
+                                   [@bs] _evaluateScript,
+                                   bodyFuncStr,
+                                   timePath |> Array.of_list
                                  )
-                          ),
-                     promise
+                              |> then_(
+                                   (_) => {
+                                     let path =
+                                       buildImagePath(imageType, name, imagePath, timePath);
+                                     _createImageDir(path);
+                                     page
+                                     |> Page.screenshot(
+                                          ~options={
+                                            /* "clip":
+                                               Js.Nullable.return({
+                                                 "x": 0.,
+                                                 "y": 0.,
+                                                 "width": 300.,
+                                                 "height": 150.
+                                               }), */
+                                            "clip": Js.Nullable.empty,
+                                            "fullPage": Js.Nullable.return(false),
+                                            "omitBackground": Js.Nullable.return(false),
+                                            "path": Js.Nullable.return(path),
+                                            "quality": Js.Nullable.empty,
+                                            "_type": Js.Nullable.return("png")
+                                          },
+                                          ()
+                                        )
+                                   }
+                                 )
+                              |> then_(
+                                   (_) => page |> Page.close |> then_((_) => browser |> resolve)
+                                 )
+                          )
                    ),
-              browser |> resolve
-            )
-     )
-  |> then_((browser) => browser |> Browser.close);
+              promise
+            ),
+       browser |> resolve
+     );

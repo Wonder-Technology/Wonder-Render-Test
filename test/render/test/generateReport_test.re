@@ -11,17 +11,25 @@ let _ =
       open Node;
       open RenderTestDataType;
       open RenderTestData;
-      beforeAllPromise(() => GenerateCorrectImage.generate(correctRenderTestData));
+      beforeAllPromise(
+        () =>
+          PuppeteerUtils.launchHeadlessBrowser()
+          |> then_((browser) => GenerateCorrectImage.generate(browser, correctRenderTestData))
+      );
       testPromise(
         "generate report html file",
         () => {
           let reportFilePath = Path.join([|Process.cwd(), "./test/report/report.html"|]);
-          Comparer.compare(wrongRenderTestData)
+          PuppeteerUtils.launchHeadlessBrowser()
           |> then_(
-               (compareResultData) =>
-                 GenerateReport.generateHtmlFile(reportFilePath, compareResultData)
+               (browser) =>
+                 Comparer.compare(browser, wrongRenderTestData)
+                 |> then_(
+                      (compareResultData) =>
+                        GenerateReport.generateHtmlFile(reportFilePath, compareResultData)
+                    )
+                 |> then_((htmlStr) => Fs.existsSync(reportFilePath) |> expect == true |> resolve)
              )
-          |> then_((htmlStr) => Fs.existsSync(reportFilePath) |> expect == true |> resolve)
         }
       )
     }

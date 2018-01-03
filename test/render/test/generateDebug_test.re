@@ -11,26 +11,37 @@ let _ =
       open Node;
       open RenderTestDataType;
       open RenderTestData;
-      beforeAllPromise(() => GenerateCorrectImage.generate(correctRenderTestData));
+      beforeAllPromise(
+        () =>
+          PuppeteerUtils.launchHeadlessBrowser()
+          |> then_((browser) => GenerateCorrectImage.generate(browser, correctRenderTestData))
+      );
       testPromise(
         "generate debug html files",
         () => {
           let reportFilePath = Path.join([|Process.cwd(), "./test/report/report.html"|]);
-          Comparer.compare(wrongRenderTestData)
+          PuppeteerUtils.launchHeadlessBrowser()
           |> then_(
-               (compareResultData) => {
-                 GenerateDebug.generateHtmlFiles(reportFilePath, compareResultData);
-                 (
-                   Fs.existsSync(
-                     Path.join([|Process.cwd(), "./test/report/basic_box_10_debug.html"|])
-                   ),
-                   Fs.existsSync(
-                     Path.join([|Process.cwd(), "./test/report/basic_box_10_20_debug.html"|])
-                   )
-                 )
-                 |> expect == (true, true)
-                 |> resolve
-               }
+               (browser) =>
+                 Comparer.compare(browser, wrongRenderTestData)
+                 |> then_(
+                      (compareResultData) => {
+                        GenerateDebug.generateHtmlFiles(reportFilePath, compareResultData);
+                        (
+                          Fs.existsSync(
+                            Path.join([|Process.cwd(), "./test/report/basic_box_10_debug.html"|])
+                          ),
+                          Fs.existsSync(
+                            Path.join([|
+                              Process.cwd(),
+                              "./test/report/basic_box_10_20_debug.html"
+                            |])
+                          )
+                        )
+                        |> expect == (true, true)
+                        |> resolve
+                      }
+                    )
              )
         }
       )
