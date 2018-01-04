@@ -76,15 +76,15 @@ let _createImageDir = (generateFilePath: string) => {
   ()
 };
 
-let getAllImagePathDataList = ({testData}, imageType) =>
+let getAllImagePathDataList = ({commonData, testData}, imageType) =>
   testData
   |> List.fold_left(
-       (list, {name, imagePath, distance, diffPercent, threshold, frameData} as testDataItem) =>
+       (list, {name, distance, diffPercent, threshold, frameData} as testDataItem) =>
          (
            frameData
            |> List.fold_left(
                 (list, {timePath}) => [
-                  (buildImagePath(imageType, name, imagePath, timePath), testDataItem),
+                  (buildImagePath(imageType, name, commonData.imagePath, timePath), testDataItem),
                   ...list
                 ],
                 []
@@ -97,7 +97,7 @@ let getAllImagePathDataList = ({testData}, imageType) =>
 let generate = (browser, {commonData, testData}, imageType) =>
   testData
   |> List.fold_left(
-       (promise, {bodyFuncStr, name, imagePath, frameData, scriptFilePathList}) =>
+       (promise, {bodyFuncStr, name, frameData, scriptFilePathList}) =>
          frameData
          |> List.fold_left(
               (promise, {timePath}) =>
@@ -118,7 +118,12 @@ let generate = (browser, {commonData, testData}, imageType) =>
                               |> then_(
                                    (_) => {
                                      let path =
-                                       buildImagePath(imageType, name, imagePath, timePath);
+                                       buildImagePath(
+                                         imageType,
+                                         name,
+                                         commonData.imagePath,
+                                         timePath
+                                       );
                                      _createImageDir(path);
                                      page
                                      |> Page.screenshot(

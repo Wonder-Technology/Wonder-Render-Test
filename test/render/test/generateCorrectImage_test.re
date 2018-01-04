@@ -41,7 +41,7 @@ let _ =
                         (_) =>
                           correctRenderTestData.testData
                           |> List.fold_left(
-                               (isExistList, {name, imagePath, frameData}) =>
+                               (isExistList, {name, frameData}) =>
                                  frameData
                                  |> List.fold_left(
                                       (isExistList, {timePath}) => [
@@ -49,7 +49,7 @@ let _ =
                                           GenerateImageTool.buildImagePath(
                                             GenerateImageType.CORRECT("correct"),
                                             name,
-                                            imagePath,
+                                            correctRenderTestData.commonData.imagePath,
                                             timePath
                                           )
                                         ),

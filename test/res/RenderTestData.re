@@ -2,6 +2,7 @@ open RenderTestDataType;
 
 let correctRenderTestData = {
   commonData: {
+    imagePath: "test/image/",
     scriptFilePathList: [
       "./test/res/BasicBoxesTool.js",
       "./test/res/CameraTool.js",
@@ -34,7 +35,6 @@ let correctRenderTestData = {
                         return wd.startDirector(state);
                     }
     |},
-      imagePath: "test/image/",
       scriptFilePathList: None,
       distance: None,
       diffPercent: None,
@@ -46,6 +46,7 @@ let correctRenderTestData = {
 
 let wrongRenderTestData = {
   commonData: {
+    imagePath: "test/image/",
     scriptFilePathList: [
       "./test/res/BasicBoxesTool.js",
       "./test/res/CameraTool.js",
@@ -83,7 +84,6 @@ let wrongRenderTestData = {
                         return wd.startDirector(state);
                     }
     |},
-      imagePath: "test/image/",
       scriptFilePathList: None,
       distance: None,
       diffPercent: None,
