@@ -19,7 +19,15 @@ let buildDebugHtmlFileName = (caseText) => {j|$(caseText)_debug.html|j};
 let _buildDebugHtmlFilePath = (targetAbsoluteReportFilePath, caseText) =>
   Path.join([|Path.dirname(targetAbsoluteReportFilePath), buildDebugHtmlFileName(caseText)|]);
 
-let generateHtmlFiles = (targetAbsoluteReportFilePath: string, (renderTestData, compareResultList)) =>
+let _generateCssFile = (filePath) =>
+  {|
+img.correct-img, img.current-img, img.diff-img{
+    width:33%;
+    height:33%;
+};|}
+  |> WonderCommonlib.NodeExtend.writeFile(filePath);
+
+let generateHtmlFiles = (targetAbsoluteReportFilePath: string, (renderTestData, compareResultList)) => {
   compareResultList
   |> List.iter(
        ((caseText, _, _, _, {bodyFuncStr})) => {
@@ -30,6 +38,10 @@ let generateHtmlFiles = (targetAbsoluteReportFilePath: string, (renderTestData, 
            ++ _buildDebugScriptStr(bodyFuncStr)
            ++ GenerateHtmlFile.buildFootStr();
          htmlStr
-         |> WonderCommonlib.NodeExtend.writeFile(_buildDebugHtmlFilePath(targetAbsoluteReportFilePath, caseText))
+         |> WonderCommonlib.NodeExtend.writeFile(
+              _buildDebugHtmlFilePath(targetAbsoluteReportFilePath, caseText)
+            )
        }
      );
+  _generateCssFile(GenerateHtmlFile.buildDebugCssFilePath( targetAbsoluteReportFilePath |> Path.dirname))
+};

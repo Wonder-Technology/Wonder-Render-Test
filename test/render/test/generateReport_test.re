@@ -17,7 +17,7 @@ let _ =
           |> then_((browser) => GenerateCorrectImage.generate(browser, correctRenderTestData))
       );
       testPromise(
-        "generate report html file",
+        "generate report html file and css file",
         () => {
           let reportFilePath = Path.join([|Process.cwd(), "./test/report/report.html"|]);
           PuppeteerUtils.launchHeadlessBrowser()
@@ -28,7 +28,17 @@ let _ =
                       (compareResultData) =>
                         GenerateReport.generateHtmlFile(reportFilePath, compareResultData)
                     )
-                 |> then_((htmlStr) => Fs.existsSync(reportFilePath) |> expect == true |> resolve)
+                 |> then_(
+                      (htmlStr) =>
+                        (
+                          Fs.existsSync(reportFilePath),
+                          Fs.existsSync(
+                            Path.join([|reportFilePath |> Path.dirname, "report.css"|])
+                          )
+                        )
+                        |> expect == (true, true)
+                        |> resolve
+                    )
              )
         }
       )
