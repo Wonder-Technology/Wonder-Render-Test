@@ -65,6 +65,14 @@ let _buildFailCaseListHtmlStr = (targetAbsoluteFilePath, imageFilePathDataList) 
        ""
      );
 
+let _generateCssFile = (filePath) =>
+  {|
+img.correct-img, img.current-img, img.diff-img{
+    width:33%;
+    height:33%;
+};|}
+  |> WonderCommonlib.NodeExtend.writeFile(filePath);
+
 let generateHtmlFile = (targetAbsoluteFilePath: string, (renderTestData, compareResultList)) =>
   compareResultList
   |> _generateDiffImages(Path.dirname(targetAbsoluteFilePath))
@@ -77,6 +85,9 @@ let generateHtmlFile = (targetAbsoluteFilePath: string, (renderTestData, compare
            ++ _buildFailCaseListHtmlStr(targetAbsoluteFilePath, imageFilePathDataList)
            ++ GenerateHtmlFile.buildFootStr();
          htmlStr |> WonderCommonlib.NodeExtend.writeFile(targetAbsoluteFilePath);
+         _generateCssFile(
+           GenerateHtmlFile.buildDebugCssFilePath(targetAbsoluteFilePath |> Path.dirname)
+         );
          htmlStr |> resolve
        }
      );
