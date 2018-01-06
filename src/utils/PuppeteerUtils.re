@@ -1,3 +1,5 @@
+open WonderBsPuppeteer;
+
 open Puppeteer;
 
 let launchHeadlessBrowser = () =>

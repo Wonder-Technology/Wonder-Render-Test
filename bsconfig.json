@@ -27,6 +27,7 @@
   "refmt": 3,
   "bs-dependencies": [
     "bs-json",
+    "wonder-bs-puppeteer",
     "wonder-commonlib"
   ],
   "package-specs": [

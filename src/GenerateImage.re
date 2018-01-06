@@ -8,7 +8,7 @@ open Performance;
 
 open Js.Promise;
 
-open Puppeteer;
+open WonderBsPuppeteer.Puppeteer;
 
 let _evaluateScript: (string, array(int)) => unit = [%bs.raw
   {|
@@ -48,7 +48,7 @@ let _addScript = ({scriptFilePathList: commonScriptFilePathList}, scriptFilePath
               (page) =>
                 /* WonderCommonlib.DebugUtils.log(scriptFilePath) |> ignore; */
                 page
-                |> Page.addScriptTag({
+                |> WonderBsPuppeteer.Page.addScriptTag({
                      "url": Js.Nullable.empty,
                      "content": Js.Nullable.empty,
                      "path": Js.Nullable.return(scriptFilePath)
@@ -105,7 +105,7 @@ let generate = (browser, {commonData, testData}, imageType) =>
                 |> then_(
                      (browser) =>
                        browser
-                       |> Browser.newPage
+                       |> WonderBsPuppeteer.Browser.newPage
                        |> _addScript(commonData, scriptFilePathList)
                        |> then_(
                             (page) =>
@@ -126,7 +126,7 @@ let generate = (browser, {commonData, testData}, imageType) =>
                                        );
                                      _createImageDir(path);
                                      page
-                                     |> Page.screenshot(
+                                     |> WonderBsPuppeteer.Page.screenshot(
                                           ~options={
                                             /* "clip":
                                                Js.Nullable.return({
@@ -147,7 +147,10 @@ let generate = (browser, {commonData, testData}, imageType) =>
                                    }
                                  )
                               |> then_(
-                                   (_) => page |> Page.close |> then_((_) => browser |> resolve)
+                                   (_) =>
+                                     page
+                                     |> WonderBsPuppeteer.Page.close
+                                     |> then_((_) => browser |> resolve)
                                  )
                           )
                    ),

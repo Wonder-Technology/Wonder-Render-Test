@@ -1989,8 +1989,8 @@ is-builtin-module@^1.0.0:
     builtin-modules "^1.0.0"
 
 is-ci@^1.0.10:
-  version "1.0.10"
-  resolved "https://registry.yarnpkg.com/is-ci/-/is-ci-1.0.10.tgz#f739336b2632365061a9d48270cd56ae3369318e"
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/is-ci/-/is-ci-1.1.0.tgz#247e4162e7860cebbdaf30b774d6b0ac7dcfe7a5"
   dependencies:
     ci-info "^1.0.0"
 
@@ -3146,14 +3146,20 @@ p-finally@^1.0.0:
   resolved "https://registry.yarnpkg.com/p-finally/-/p-finally-1.0.0.tgz#3fbcfb15b899a44123b34b6dcc18b724336a2cae"
 
 p-limit@^1.1.0:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/p-limit/-/p-limit-1.1.0.tgz#b07ff2d9a5d88bec806035895a2bab66a27988bc"
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/p-limit/-/p-limit-1.2.0.tgz#0e92b6bedcb59f022c13d0f1949dc82d15909f1c"
+  dependencies:
+    p-try "^1.0.0"
 
 p-locate@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/p-locate/-/p-locate-2.0.0.tgz#20a0103b222a70c8fd39cc2e580680f3dde5ec43"
   dependencies:
     p-limit "^1.1.0"
+
+p-try@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/p-try/-/p-try-1.0.0.tgz#cbc79cdbaf8fd4228e13f621f2b1a237c1b207b3"
 
 parse-bmfont-ascii@^1.0.3:
   version "1.0.6"
@@ -4305,6 +4311,10 @@ wonder-bs-jest@0.2.17, wonder-bs-jest@latest:
   resolved "https://registry.yarnpkg.com/wonder-bs-jest/-/wonder-bs-jest-0.2.17.tgz#ebbcd37487d8ce0c5d863a501859b8c14db44d88"
   dependencies:
     wonder-jest latest
+
+wonder-bs-puppeteer@^0.1.0:
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/wonder-bs-puppeteer/-/wonder-bs-puppeteer-0.1.0.tgz#8266357f722f3a70d31e6d4efc73a86f17f377ad"
 
 wonder-bs-sinon@latest:
   version "0.1.5"
