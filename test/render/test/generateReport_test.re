@@ -26,7 +26,7 @@ let _ =
                  Comparer.compare(browser, wrongRenderTestData)
                  |> then_(
                       (compareResultData) =>
-                        GenerateReport.generateHtmlFile(reportFilePath, compareResultData)
+                        Tester.generateReport(reportFilePath, compareResultData)
                     )
                  |> then_(
                       (htmlStr) =>
