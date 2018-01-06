@@ -13,7 +13,7 @@ open Js.Promise;
    }; */
 let _getTargetDiffPercent = (percent) =>
   switch percent {
-  | None => 0.15
+  | None => 0.001
   | Some(p) => p
   };
 
