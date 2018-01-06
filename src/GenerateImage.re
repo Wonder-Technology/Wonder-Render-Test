@@ -72,7 +72,7 @@ let buildImagePath = (imageType, imageName, imagePath, timePath) =>
 let _createImageDir = (generateFilePath: string) => {
   let dirname = generateFilePath |> Path.dirname;
   dirname |> Fs.existsSync ?
-    () : NodeExtend.mkAlldirsSync(generateFilePath |> Path.dirname) |> ignore;
+    () : WonderCommonlib.NodeExtend.mkAlldirsSync(generateFilePath |> Path.dirname) |> ignore;
   ()
 };
 

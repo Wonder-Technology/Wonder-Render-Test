@@ -30,6 +30,6 @@ let generateHtmlFiles = (targetAbsoluteReportFilePath: string, (renderTestData, 
            ++ _buildDebugScriptStr(bodyFuncStr)
            ++ GenerateHtmlFile.buildFootStr();
          htmlStr
-         |> Fs.writeFileAsUtf8Sync(_buildDebugHtmlFilePath(targetAbsoluteReportFilePath, caseText))
+         |> WonderCommonlib.NodeExtend.writeFile(_buildDebugHtmlFilePath(targetAbsoluteReportFilePath, caseText))
        }
      );

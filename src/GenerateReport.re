@@ -76,7 +76,7 @@ let generateHtmlFile = (targetAbsoluteFilePath: string, (renderTestData, compare
            ++ GenerateHtmlFile.buildImportScriptStr(targetAbsoluteFilePath, renderTestData)
            ++ _buildFailCaseListHtmlStr(targetAbsoluteFilePath, imageFilePathDataList)
            ++ GenerateHtmlFile.buildFootStr();
-         htmlStr |> Fs.writeFileAsUtf8Sync(targetAbsoluteFilePath);
+         htmlStr |> WonderCommonlib.NodeExtend.writeFile(targetAbsoluteFilePath);
          htmlStr |> resolve
        }
      );

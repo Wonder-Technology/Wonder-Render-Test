@@ -25,6 +25,9 @@
   "dependencies": {
     "bs-json": "^0.2.3",
     "jimp": "^0.2.28",
-    "wonder-commonlib": "latest"
+    "wonder-commonlib": "^0.2.17"
+  },
+  "resolutions": {
+    "wonder-bs-jest": "0.2.17"
   }
 }
