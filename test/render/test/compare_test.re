@@ -13,13 +13,13 @@ let _ =
       open RenderTestData;
       beforeAllPromise(
         () =>
-          PuppeteerUtils.launchHeadlessBrowser()
+          WonderBsPuppeteer.PuppeteerUtils.launchHeadlessBrowser()
           |> then_((browser) => GenerateCorrectImage.generate(browser, correctRenderTestData))
       );
       testPromise(
         "test compare correct and wrong image",
         () =>
-          PuppeteerUtils.launchHeadlessBrowser()
+          WonderBsPuppeteer.PuppeteerUtils.launchHeadlessBrowser()
           |> then_(
                (browser) =>
                  Comparer.compare(browser, wrongRenderTestData)

@@ -33,7 +33,7 @@ let _ =
         "test generate correct images to specific dir",
         () =>
           RenderTestData.(
-            PuppeteerUtils.launchHeadlessBrowser()
+            WonderBsPuppeteer.PuppeteerUtils.launchHeadlessBrowser()
             |> then_(
                  (browser) =>
                    GenerateCorrectImage.generate(browser, correctRenderTestData)

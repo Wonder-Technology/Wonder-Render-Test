@@ -13,14 +13,14 @@ let _ =
       open RenderTestData;
       beforeAllPromise(
         () =>
-          PuppeteerUtils.launchHeadlessBrowser()
+          WonderBsPuppeteer.PuppeteerUtils.launchHeadlessBrowser()
           |> then_((browser) => GenerateCorrectImage.generate(browser, correctRenderTestData))
       );
       testPromise(
         "generate debug html files",
         () => {
           let reportFilePath = Path.join([|Process.cwd(), "./test/report/report.html"|]);
-          PuppeteerUtils.launchHeadlessBrowser()
+          WonderBsPuppeteer.PuppeteerUtils.launchHeadlessBrowser()
           |> then_(
                (browser) =>
                  Comparer.compare(browser, wrongRenderTestData)
