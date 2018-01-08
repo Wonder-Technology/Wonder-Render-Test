@@ -19,7 +19,10 @@ let buildDebugHtmlFileName = (caseText) => {j|$(caseText)_debug.html|j};
 let _buildDebugHtmlFilePath = (targetAbsoluteReportFilePath, caseText) =>
   Path.join([|Path.dirname(targetAbsoluteReportFilePath), buildDebugHtmlFileName(caseText)|]);
 
-let generateHtmlFiles = (targetAbsoluteReportFilePath: string, (renderTestData, compareResultList)) => {
+let removeFiles = (debugFileDir) =>
+  Fs.existsSync(debugFileDir) ? WonderCommonlib.NodeExtend.rmdirFilesSync(debugFileDir) : ();
+
+let generateHtmlFiles = (targetAbsoluteReportFilePath: string, (renderTestData, compareResultList)) =>
   compareResultList
   |> List.iter(
        ((caseText, _, _, _, {bodyFuncStr})) => {
@@ -35,4 +38,3 @@ let generateHtmlFiles = (targetAbsoluteReportFilePath: string, (renderTestData, 
             )
        }
      );
-};

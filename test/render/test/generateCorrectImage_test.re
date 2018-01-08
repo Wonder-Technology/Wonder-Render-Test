@@ -28,7 +28,9 @@ let _ =
            - 2
          )
          |> Js.Array.reduce((resultList, _) => [true, ...resultList], []); */
-      beforeEach(() => WonderCommonlib.NodeExtend.rmdirFilesSync(Path.join([|Process.cwd(), "./test/image"|])));
+      afterEach(
+        () => GenerateDebug.removeFiles(Node.Path.join([|Node.Process.cwd(), "./test/image"|]))
+      );
       testPromise(
         "test generate correct images to specific dir",
         () =>

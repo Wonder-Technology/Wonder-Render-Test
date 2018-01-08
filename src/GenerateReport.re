@@ -73,6 +73,10 @@ img.correct-img, img.current-img, img.diff-img{
 };|}
   |> WonderCommonlib.NodeExtend.writeFile(filePath);
 
+let removeFiles = (reportFilePath) =>
+  Fs.existsSync(reportFilePath) ?
+    WonderCommonlib.NodeExtend.rmdirFilesSync(reportFilePath |> Path.dirname) : ();
+
 let generateHtmlFile = (targetAbsoluteFilePath: string, (renderTestData, compareResultList)) =>
   compareResultList
   |> _generateDiffImages(Path.dirname(targetAbsoluteFilePath))

@@ -11,6 +11,12 @@ let _ =
       open Node;
       open RenderTestDataType;
       open RenderTestData;
+      afterEach(
+        () =>
+          GenerateReport.removeFiles(
+            Node.Path.join([|Node.Process.cwd(), "./test/report/report.html"|])
+          )
+      );
       beforeAllPromise(
         () =>
           WonderBsPuppeteer.PuppeteerUtils.launchHeadlessBrowser()
