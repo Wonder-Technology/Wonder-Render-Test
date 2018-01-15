@@ -15,8 +15,9 @@ open JimpType;
 
 [@bs.module "jimp"] external diff : (jimpImage, jimpImage, float) => diffResult = "";
 
-/* [@bs.send.pipe : jimpImage] external write : (string, unit => unit) => unit = */
 [@bs.send.pipe : jimpImage] external write : string => unit = "";
+
+[@bs.send.pipe : jimpImage] external writeCb : (string, unit => unit) => unit = "write";
 /* let getMatchImageData: (string, string) => Js.Promise.t(Js.Nullable.t(jimpImage)) = [%bs.raw */
 /* let getMatchImageData: (string, string) => Js.Promise.t((Js.boolean, jimpImage)) = [%bs.raw
      {|

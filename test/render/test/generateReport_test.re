@@ -22,7 +22,7 @@ let _ =
           WonderBsPuppeteer.PuppeteerUtils.launchHeadlessBrowser()
           |> then_((browser) => GenerateCorrectImage.generate(browser, correctRenderTestData))
       );
-      testPromise(
+      testPromiseWithTimeout(
         "generate report html file and css file",
         () => {
           let reportFilePath = Path.join([|Process.cwd(), "./test/report/report.html"|]);
@@ -46,7 +46,7 @@ let _ =
                         |> resolve
                     )
              )
-        }
+        }, 1000000
       )
     }
   );

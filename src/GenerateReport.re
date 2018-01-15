@@ -17,19 +17,25 @@ let _generateDiffImages = (targetAbsoluteFileDir: string, compareResultList) =>
          |> then_(
               (list) => {
                 let diffImagePath = _buildDiffImagePath(targetAbsoluteFileDir, caseText);
-                /* todo wait for write finish? */
-                Jimp.write(diffImagePath, diffImage);
-                [
-                  (
-                    caseText,
-                    currentImagePath,
-                    correctImagePath,
-                    diffImagePath,
-                    currentTestDataItem
-                  ),
-                  ...list
-                ]
-                |> resolve
+                make(
+                  (~resolve, ~reject) =>
+                    Jimp.writeCb(
+                      diffImagePath,
+                      () =>
+                        [@bs]
+                        resolve([
+                          (
+                            caseText,
+                            currentImagePath,
+                            correctImagePath,
+                            diffImagePath,
+                            currentTestDataItem
+                          ),
+                          ...list
+                        ]),
+                      diffImage
+                    )
+                )
               }
             ),
        [] |> resolve
