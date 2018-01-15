@@ -26,7 +26,7 @@ let _ =
                  |> then_(
                       ((_, list)) => {
                         let failText = Comparer.getFailText(list);
-                        WonderCommonlib.DebugUtils.log(list |> List.length) |> ignore;
+                        WonderLog.Log.print(list |> List.length) |> ignore;
                         (
                           Comparer.isPass(list),
                           failText |> Js.String.includes("basic_box_10_20"),

@@ -46,7 +46,6 @@ let _addScript = ({scriptFilePathList: commonScriptFilePathList}, scriptFilePath
          promise
          |> then_(
               (page) =>
-                /* WonderCommonlib.DebugUtils.log(scriptFilePath) |> ignore; */
                 page
                 |> WonderBsPuppeteer.Page.addScriptTag({
                      "url": Js.Nullable.empty,
