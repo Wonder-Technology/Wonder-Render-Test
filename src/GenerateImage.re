@@ -12,24 +12,23 @@ open WonderBsPuppeteer.Puppeteer;
 
 let _evaluateScript: (string, array(int)) => unit = [%bs.raw
   {|
-   function(bodyFuncStr, timePathArr) {
-        wd.startDirector = function(state){
-            return state
-        };
-     window.performance.now = function(){
-       return 0
-     }
+function(bodyFuncStr, timePathArr) {
+    wd.startDirector = function (state) {
+        var state = wd.initDirector(state);
 
-var bodyFunc = new Function(bodyFuncStr);
+        var state = timePathArr.reduce(function (state, time) {
+            return wd.loopBody(time, state)
+        }, state);
+    };
 
-var state = bodyFunc();
+    window.performance.now = function () {
+        return 0
+    }
 
- var state = wd.initDirector(state);
+    var bodyFunc = new Function(bodyFuncStr);
 
-var state = timePathArr.reduce(function(state, time){
-  return wd.loopBody(time, state)
-}, state);
-   }
+    return bodyFunc();
+}
     |}
 ];
 
@@ -93,6 +92,13 @@ let getAllImagePathDataList = ({commonData, testData}, imageType) =>
        []
      );
 
+let _exposeReadFileAsUtf8Sync = (page) =>
+  page
+  |> Page.exposeFunctionWithString(
+       "readFileAsUtf8Sync",
+       (filePath) => Fs.readFileAsUtf8Sync(filePath)
+     );
+
 let generate = (browser, {commonData, testData}, imageType) =>
   testData
   |> List.fold_left(
@@ -109,48 +115,57 @@ let generate = (browser, {commonData, testData}, imageType) =>
                        |> then_(
                             (page) =>
                               page
-                              |> Page.evaluateWithTwoArgs(
-                                   [@bs] _evaluateScript,
-                                   bodyFuncStr,
-                                   timePath |> Array.of_list
-                                 )
-                              |> then_(
-                                   (_) => {
-                                     let path =
-                                       buildImagePath(
-                                         imageType,
-                                         name,
-                                         commonData.imagePath,
-                                         timePath
-                                       );
-                                     _createImageDir(path);
-                                     page
-                                     |> WonderBsPuppeteer.Page.screenshot(
-                                          ~options={
-                                            /* "clip":
-                                               Js.Nullable.return({
-                                                 "x": 0.,
-                                                 "y": 0.,
-                                                 "width": 300.,
-                                                 "height": 150.
-                                               }), */
-                                            "clip": Js.Nullable.empty,
-                                            "fullPage": Js.Nullable.return(false),
-                                            "omitBackground": Js.Nullable.return(false),
-                                            "path": Js.Nullable.return(path),
-                                            "quality": Js.Nullable.empty,
-                                            "_type": Js.Nullable.return("png")
-                                          },
-                                          ()
-                                        )
-                                   }
-                                 )
-                              |> then_(
-                                   (_) =>
-                                     page
-                                     |> WonderBsPuppeteer.Page.close
-                                     |> then_((_) => browser |> resolve)
-                                 )
+                              |> (
+                                (page) =>
+                                  page
+                                  |> _exposeReadFileAsUtf8Sync
+                                  |> then_(
+                                       (_) =>
+                                         page
+                                         |> Page.evaluateWithTwoArgs(
+                                              [@bs] _evaluateScript,
+                                              bodyFuncStr,
+                                              timePath |> Array.of_list
+                                            )
+                                         |> then_(
+                                              (_) => {
+                                                let path =
+                                                  buildImagePath(
+                                                    imageType,
+                                                    name,
+                                                    commonData.imagePath,
+                                                    timePath
+                                                  );
+                                                _createImageDir(path);
+                                                page
+                                                |> WonderBsPuppeteer.Page.screenshot(
+                                                     ~options={
+                                                       /* "clip":
+                                                          Js.Nullable.return({
+                                                            "x": 0.,
+                                                            "y": 0.,
+                                                            "width": 300.,
+                                                            "height": 150.
+                                                          }), */
+                                                       "clip": Js.Nullable.empty,
+                                                       "fullPage": Js.Nullable.return(false),
+                                                       "omitBackground": Js.Nullable.return(false),
+                                                       "path": Js.Nullable.return(path),
+                                                       "quality": Js.Nullable.empty,
+                                                       "_type": Js.Nullable.return("png")
+                                                     },
+                                                     ()
+                                                   )
+                                              }
+                                            )
+                                         |> then_(
+                                              (_) =>
+                                                page
+                                                |> WonderBsPuppeteer.Page.close
+                                                |> then_((_) => browser |> resolve)
+                                            )
+                                     )
+                              )
                           )
                    ),
               promise
