@@ -7,7 +7,8 @@ let correctRenderTestData = {
       "./test/res/BasicBoxesTool.js",
       "./test/res/CameraTool.js",
       "./test/res/wd.js"
-    ]
+    ],
+    replaceForDebug: (htmlStr) => htmlStr
   },
   testData: [
     {
@@ -51,7 +52,8 @@ let wrongRenderTestData = {
       "./test/res/BasicBoxesTool.js",
       "./test/res/CameraTool.js",
       "./test/res/wd.js"
-    ]
+    ],
+    replaceForDebug: (htmlStr) => htmlStr
   },
   testData: [
     {

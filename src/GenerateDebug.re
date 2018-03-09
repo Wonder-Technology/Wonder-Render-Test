@@ -30,7 +30,7 @@ let generateHtmlFiles = (targetAbsoluteReportFilePath: string, (renderTestData, 
            GenerateHtmlFile.buildHeadStr(buildDebugHtmlFileName(caseText))
            ++ "\n<body>\n"
            ++ GenerateHtmlFile.buildImportScriptStr(targetAbsoluteReportFilePath, renderTestData)
-           ++ _buildDebugScriptStr(bodyFuncStr)
+           ++ _buildDebugScriptStr(bodyFuncStr |> renderTestData.commonData.replaceForDebug)
            ++ GenerateHtmlFile.buildFootStr();
          htmlStr
          |> WonderCommonlib.NodeExtend.writeFile(

@@ -14,7 +14,8 @@ type testDataItem = {
 
 type commonData = {
   imagePath: string,
-  scriptFilePathList: list(string)
+  scriptFilePathList: list(string),
+  replaceForDebug: string => string
 };
 
 type renderTestData = {
