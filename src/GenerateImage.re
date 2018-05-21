@@ -39,7 +39,6 @@ let _addScript = ({scriptFilePathList: commonScriptFilePathList}, scriptFilePath
     | Some(scriptFilePathList) => scriptFilePathList @ commonScriptFilePathList
     }
   )
-  /* |> List.map((filePath) => Path.join([|Process.cwd(), filePath|])) */
   |> List.fold_left(
        (promise, scriptFilePath) =>
          promise
@@ -99,6 +98,28 @@ let _exposeReadFileAsUtf8Sync = (page) =>
        (filePath) => Fs.readFileAsUtf8Sync(filePath)
      );
 
+let _loadImage = [%bs.raw
+  {|
+      function(imageSrc){
+        var getPixels = require("get-pixels");
+
+        return new Promise((resolve, reject) => {
+
+        getPixels(imageSrc, function(err, pixels) {
+            if(err) {
+                reject(err);
+            }
+
+            resolve([Array.from(pixels.data.slice()), pixels.shape])
+          })
+        });
+      }
+      |}
+];
+
+let _exposeLoadImage = (page) =>
+  page |> Page.exposeFunctionWithString("loadImage", (imageSrc) => _loadImage(imageSrc));
+
 let generate = (browser, {commonData, testData}, imageType) =>
   testData
   |> List.fold_left(
@@ -119,6 +140,7 @@ let generate = (browser, {commonData, testData}, imageType) =>
                                 (page) =>
                                   page
                                   |> _exposeReadFileAsUtf8Sync
+                                  |> then_((_) => page |> _exposeLoadImage)
                                   |> then_(
                                        (_) =>
                                          page
