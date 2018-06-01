@@ -1,7 +1,8 @@
 {
   "automock": false,
   "moduleFileExtensions": [
-    "js"
+    "js",
+    "json"
   ],
   "testRegex": "lib/js/test/.+/.+_test\\.js$",
   "transformIgnorePatterns": [

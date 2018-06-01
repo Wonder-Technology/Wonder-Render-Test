@@ -46,8 +46,8 @@ let _addScript = ({scriptFilePathList: commonScriptFilePathList}, scriptFilePath
               (page) =>
                 page
                 |> WonderBsPuppeteer.Page.addScriptTag({
-                     "url": Js.Nullable.empty,
-                     "content": Js.Nullable.empty,
+                     "url": Js.Nullable.undefined,
+                     "content": Js.Nullable.undefined,
                      "path": Js.Nullable.return(scriptFilePath)
                    })
                 |> then_((_) => page |> resolve)
@@ -169,11 +169,11 @@ let generate = (browser, {commonData, testData}, imageType) =>
                                                             "width": 300.,
                                                             "height": 150.
                                                           }), */
-                                                       "clip": Js.Nullable.empty,
+                                                       "clip": Js.Nullable.undefined,
                                                        "fullPage": Js.Nullable.return(false),
                                                        "omitBackground": Js.Nullable.return(false),
                                                        "path": Js.Nullable.return(path),
-                                                       "quality": Js.Nullable.empty,
+                                                       "quality": Js.Nullable.undefined,
                                                        "_type": Js.Nullable.return("png")
                                                      },
                                                      ()
