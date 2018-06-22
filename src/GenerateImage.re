@@ -98,7 +98,7 @@ let _exposeReadFileAsUtf8Sync = (page) =>
        (filePath) => Fs.readFileAsUtf8Sync(filePath)
      );
 
-let _loadImage = [%bs.raw
+let _loadImageSrc = [%bs.raw
   {|
       function(imageSrc){
         var getPixels = require("get-pixels");
@@ -118,7 +118,7 @@ let _loadImage = [%bs.raw
 ];
 
 let _exposeLoadImage = (page) =>
-  page |> Page.exposeFunctionWithString("loadImage", (imageSrc) => _loadImage(imageSrc));
+  page |> Page.exposeFunctionWithString("loadImageSrc", (imageSrc) => _loadImageSrc(imageSrc));
 
 let generate = (browser, {commonData, testData}, imageType) =>
   testData
