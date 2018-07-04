@@ -126,12 +126,12 @@ let _exposeReadFileAsUtf8Sync = page =>
   page
   |> Page.exposeFunctionWithString("readFileAsUtf8Sync", filePath =>
        Fs.readFileAsUtf8Sync(filePath)
-     )
-  |> then_(_ =>
-       page
-       |> Page.exposeFunctionWithString("readFileAsBufferData", filePath =>
-            NodeExtend.readFileBufferDataSync(filePath)
-          )
+     );
+
+let _exposeReadFileAsBufferDataSync = page =>
+  page
+  |> Page.exposeFunctionWithString("readFileAsBufferDataSync", filePath =>
+       NodeExtend.readFileBufferDataSync(filePath)
      );
 
 let _loadImageSrc = [%bs.raw
@@ -189,6 +189,9 @@ let generate = (browser, {commonData, testData}, imageType) =>
                             page =>
                               page
                               |> _exposeReadFileAsUtf8Sync
+                              |> then_(_ =>
+                                   page |> _exposeReadFileAsBufferDataSync
+                                 )
                               |> then_(_ => page |> _exposeLoadImage)
                               |> then_(_ =>
                                    page
