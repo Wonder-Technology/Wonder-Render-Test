@@ -26,7 +26,7 @@
   ],
   "refmt": 3,
   "bs-dependencies": [
-    "bs-json",
+    "wonder-bs-json",
     "wonder-log",
     "wonder-bs-puppeteer",
     "wonder-commonlib"

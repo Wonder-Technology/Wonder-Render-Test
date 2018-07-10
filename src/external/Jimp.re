@@ -19,7 +19,7 @@ open JimpType;
 
 [@bs.send.pipe : jimpImage] external writeCb : (string, unit => unit) => unit = "write";
 /* let getMatchImageData: (string, string) => Js.Promise.t(Js.Nullable.t(jimpImage)) = [%bs.raw */
-/* let getMatchImageData: (string, string) => Js.Promise.t((Js.boolean, jimpImage)) = [%bs.raw
+/* let getMatchImageData: (string, string) => Js.Promise.t((bool, jimpImage)) = [%bs.raw
      {|
       function(imagePath1, imagePath2) {
           var jimp = require("jimp");
